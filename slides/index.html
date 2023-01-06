@@ -117,6 +117,7 @@ If I want to learn Structural Equation Modelling I should already have...
 * A very good understanding of **multiple linear regression**
 * Good familiarity with terms like **variance, covariance, correlation** 
 * It can help to have some familiarity with **data tidying** (i.e. in R), especially for converting between **long and wide data formats**
+* Formal understanding of **causal diagrams**/Directed Acyclic Graphs can be helpful
 
 
 ---
@@ -353,8 +354,8 @@ Its scale is arbitrary but is commonly fixed to either a) a marker variable or b
 
 .pull-right[
 
-<div id="htmlwidget-8d7461218a78dd41fa64" style="width:500px;height:500px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-8d7461218a78dd41fa64">{"x":{"diagram":" digraph plot { \n graph [ overlap = true, fontsize = 10 ] \n node [ shape = box ] \n node [shape = box] \n stress_q1; stress_q2; stress_q3; stress_q4; stress_q5 \n node [shape = oval] \n stress \n \n edge [ color = black ] \n  stress->stress_q1 [label = \"0.9\"] stress->stress_q2 [label = \"0.9\"] stress->stress_q3 [label = \"0.87\"] stress->stress_q4 [label = \"0.92\"] stress->stress_q5 [label = \"0.89\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-5a4d9da9a787e1da76ea" style="width:500px;height:500px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5a4d9da9a787e1da76ea">{"x":{"diagram":" digraph plot { \n graph [ overlap = true, fontsize = 10 ] \n node [ shape = box ] \n node [shape = box] \n stress_q1; stress_q2; stress_q3; stress_q4; stress_q5 \n node [shape = oval] \n stress \n \n edge [ color = black ] \n  stress->stress_q1 [label = \"0.9\"] stress->stress_q2 [label = \"0.9\"] stress->stress_q3 [label = \"0.87\"] stress->stress_q4 [label = \"0.92\"] stress->stress_q5 [label = \"0.89\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 
 ]
@@ -392,7 +393,7 @@ class: middle
 .pull-left-small[
 
 
-* Constraints on latent variables can also be used in clever ways to capture change over time.
+Constraints on latent variables can also be used in clever ways to capture change over time.
 
 
 ]
@@ -409,6 +410,38 @@ class: middle
 
 ]
 
+---
+
+### Latent Growth Modelling
+
+.pull-left-small[
+
+
+Constraints on latent variables can also be used in clever ways to capture change over time.
+
+  * The mean linear slope for divorce rates was -0.203 per year
+  * The mean linear slope for margarine consumption was -0.215 per year, explaining much of why the two are correlated.
+  
+**But**, a positive correlation between state-level slopes in divorce rate and state-level slopes in margarine consumption (0.417) suggests that divorce rates were falling faster in states where margarine consumption was falling faster (and vice-versa)
+
+
+]
+
+.pull-right-big[
+
+.center[
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+&lt;img src="index_files/figure-html/unnamed-chunk-17-1.png" width="100%" /&gt;
+
+]
+
+]
+
+
+
+
 
 ---
 
@@ -417,7 +450,11 @@ class: middle
 .pull-left-small[
 
 
-* Constraints on latent variables can also be used in clever ways to capture change over time.
+The fact that latent growth models use wide rather than long data means that there are a few more nuanced options for examining associations between trends as well as residuals between trends:
+
+* What are the associations between latent traits/individuals: intercepts
+* What are the associations between latent trends: slopes
+* What are the associations between time varying residuals: indicator variable residuals
 
 
 ]
@@ -429,6 +466,26 @@ class: middle
 &lt;img src="images/lgm.jpg" width="80%" /&gt;
 
 ]
+
+]
+
+---
+
+class: middle
+
+.pull-left[
+
+## [Open access taster workbook on SEM, CFA, and LGM in `R` using the `lavaan` package](https://github.com/cjrwebb/aqm-taster-sem)
+
+Link: https://github.com/cjrwebb/aqm-taster-sem 
+
+* Click on Code -&gt; Download as .zip -&gt; Open .Rproj file and `worked-examples.R`
+
+]
+
+.pull-right[
+
+&lt;img src="images/githubpage.png" width="80%" /&gt;
 
 ]
 

@@ -31,6 +31,8 @@ background-size: contain
 options(htmltools.dir.version = FALSE)
 library(tidyverse)
 library(patchwork)
+library(dagitty)
+library(lavaan)
 library(xaringanExtra)
 library(xaringanthemer)
 knitr::opts_chunk$set(
@@ -314,6 +316,7 @@ If I want to learn Structural Equation Modelling I should already have...
 * A very good understanding of **multiple linear regression**
 * Good familiarity with terms like **variance, covariance, correlation** 
 * It can help to have some familiarity with **data tidying** (i.e. in R), especially for converting between **long and wide data formats**
+* Formal understanding of **causal diagrams**/Directed Acyclic Graphs can be helpful
 
 
 ---
@@ -815,7 +818,7 @@ knitr::include_graphics("images/divorce_margarine.png")
 .pull-left-small[
 
 
-* Constraints on latent variables can also be used in clever ways to capture change over time.
+Constraints on latent variables can also be used in clever ways to capture change over time.
 
 
 ]
@@ -997,12 +1000,12 @@ circle_points(c("i_marg", "s_marg", "i_div", "s_div"), lgm_graph, cex = 7)
 .pull-left-small[
 
 
-* Constraints on latent variables can also be used in clever ways to capture change over time.
+Constraints on latent variables can also be used in clever ways to capture change over time.
 
   * The mean linear slope for divorce rates was -0.203 per year
   * The mean linear slope for margarine consumption was -0.215 per year, explaining much of why the two are correlated.
   
-  * **But**, a positive correlation between state-level slopes in divorce rate and state-level slopes in margarine consumption (0.417) suggests that divorce rates were falling faster in states where margarine consumption was falling faster (and vice-versa)
+**But**, a positive correlation between state-level slopes in divorce rate and state-level slopes in margarine consumption (0.417) suggests that divorce rates were falling faster in states where margarine consumption was falling faster (and vice-versa)
 
 
 ]
@@ -1021,6 +1024,7 @@ circle_points(c("i_marg", "s_marg", "i_div", "s_div"), lgm_graph, cex = 7)
 
 ```
 
+]
 
 ]
 
@@ -1060,7 +1064,27 @@ knitr::include_graphics("images/lgm.jpg")
 
 ---
 
-## [Open access taster workbook on SEM, CFA, and LGM in `R` using the `lavaan` package]()
+class: middle
 
-Link: 
+.pull-left[
+
+## [Open access taster workbook on SEM, CFA, and LGM in `R` using the `lavaan` package](https://github.com/cjrwebb/aqm-taster-sem)
+
+Link: https://github.com/cjrwebb/aqm-taster-sem 
+
+* Click on Code -> Download as .zip -> Open .Rproj file and `worked-examples.R`
+
+]
+
+.pull-right[
+
+```{r, echo = FALSE, out.width="80%"}
+
+knitr::include_graphics("images/githubpage.png")
+
+```
+
+]
+
+
 
