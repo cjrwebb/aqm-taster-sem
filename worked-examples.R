@@ -63,9 +63,9 @@ lavaanPlot::lavaanPlot(model = simple_out, coefs = TRUE)
 #' The regression coefficients can be interpreted as usual:
 #' An increase of 1 in income (£1000) was associated with a 0.42 (£420) increase in
 #' spending on children (investment).
-#' An increase of 1 in income was associated with an increase of 0.29 points on the
+#' An increase of 1 in income was associated with an increase of 0.32 points on the
 #' SCWS wellbeing scale, holding investment constant.
-#' An increase of 1 in investment (£1000) was associated with an increase of 0.88 points
+#' An increase of 1 in investment (£1000) was associated with an increase of 0.92 points
 #' on the SCWS wellbeing scale, holding income constant.
 
 #' However, the indirect effect of income mediated through investment can also be 
@@ -78,12 +78,12 @@ lavaanPlot::lavaanPlot(model = simple_out, coefs = TRUE)
 #' via its effect on investment is a 0.38732 point increase in wellbeing score. This is 
 #' equal to a:
 
-(0.421 * 0.920) / sd(dat$scws)
+(0.421 * 0.920) / sd(child_data$scws)
 
 #' change in y of 0.053 standard deviations in wellbeing score or partial correlation 
 #' coefficient of:
 
-(0.421 * 0.920) * (sd(dat$income) / sd(dat$scws))
+(0.421 * 0.920) * (sd(child_data$income) / sd(child_data$scws))
 
 #' Around a 0.265 standard deviation increase in wellbeing score for a 1 standard deviation
 #' increase in income (around £5,000)
@@ -91,7 +91,7 @@ lavaanPlot::lavaanPlot(model = simple_out, coefs = TRUE)
 #' We could also work out the total impact of income via both its direct and indirect effect
 #' by summing the coefficients:
 
-(0.421 * 0.920) * (sd(dat$income) / sd(dat$scws)) + 0.324 * (sd(dat$income) / sd(dat$scws))
+(0.421 * 0.920) * (sd(child_data$income) / sd(child_data$scws)) + 0.324 * (sd(child_data$income) / sd(child_data$scws))
 
 #' In other words, a 1 standard deviation increase in income is associated with a 0.487 
 #' standard deviation increase in child wellbeing via both its indirect effect through
@@ -212,7 +212,8 @@ summary(simple_cfa_out, standardized = TRUE, rsquare = TRUE, fit.measures = TRUE
 #' Regardless, we will continue with the one-factor linear solution for the sake
 #' of demonstration.
 
-lavaanPlot::lavaanPlot(model = simple_cfa_out, coefs = TRUE)
+# The stand = TRUE argument standardises the coefficients
+lavaanPlot::lavaanPlot(model = simple_cfa_out, stand = TRUE, coefs = TRUE)
 
 #' we can also plot the results of our confirmatory factor analysis as above, 
 #' note the direction of the arrows. The latent variable that has been estimated
@@ -302,7 +303,7 @@ complex_sem <- "
 complex_out <- lavaan::sem(complex_sem, data = child_data)
 summary(complex_out, standardized = TRUE, rsquare = TRUE, fit.measures = TRUE)
 # use the stand = TRUE argument for standardised coefficients to be shown
-lavaanPlot::lavaanPlot(model = complex_out, coefs = TRUE)
+lavaanPlot::lavaanPlot(model = complex_out, stand = TRUE, coefs = TRUE)
 
 # Check the LVs standard deviation:
 stress_lv_2 <- lavPredict(complex_out)
@@ -324,7 +325,7 @@ sd(stress_lv_2)
 #' In this case, the cost of decreasing stress by one standard deviation would have to 
 #' be less than the cost of increasing income by 0.361/0.487 = 0.741 standard deviations
 #' (approximately 0.741 * sd(dat$income) = £3.7k per annum) for it to be as effective as
-#' simply increasing families income by that amount.
+#' simply increasing families' income by that amount.
 
 
 
@@ -551,7 +552,7 @@ BIC(i_only, vi_fs, vi_vs, vi_vs_fq)
 #' divorce rates before we add the growth in margarine consumption:
 
 summary(vi_vs, standardized = TRUE, rsquare = TRUE)
-lavaanPlot(model = vi_vs, coefs = TRUE, err = TRUE)
+lavaanPlot(model = vi_vs, coefs = TRUE)
 
 #' Note here that, different to a multilevel growth model, the R-square
 #' for each measurement of divorce is not fixed to be equal: the wide
@@ -586,6 +587,7 @@ lavaanPlot(model = vi_vs, coefs = TRUE, err = TRUE)
 
 lvs <- lavPredict(vi_vs)
 lvs <- as_tibble(lvs)
+x <- 0:9
 
 plot(x = NULL, y = NULL, xlim = c(0, 9), ylim = c(0,10), xlab = "time", ylab = "Divorce rate")
 for (i in 1:50) {
@@ -645,7 +647,6 @@ divorce_margarine_ppmod <- "
 "
 
 ppmod_out <- growth(divorce_margarine_ppmod, data = div_dat)
-
 summary(ppmod_out, standardized = TRUE)
 
 
