@@ -716,27 +716,27 @@ divorce_margarine_pp_cr_mod <- "
   # Fix all of the residual variance for the indicator
   # variables to be the same (maybe too strong an assumption
   # to make, but can be tested)
-  divorce_1 ~~ resd*divorce_1
-  divorce_2 ~~ resd*divorce_2
-  divorce_3 ~~ resd*divorce_3
-  divorce_4 ~~ resd*divorce_4
-  divorce_5 ~~ resd*divorce_5
-  divorce_6 ~~ resd*divorce_6
-  divorce_7 ~~ resd*divorce_7
-  divorce_8 ~~ resd*divorce_8
-  divorce_9 ~~ resd*divorce_9
-  divorce_10 ~~ resd*divorce_10
+  divorce_1 ~~ resd1*divorce_1
+  divorce_2 ~~ resd1*divorce_2
+  divorce_3 ~~ resd1*divorce_3
+  divorce_4 ~~ resd1*divorce_4
+  divorce_5 ~~ resd1*divorce_5
+  divorce_6 ~~ resd1*divorce_6
+  divorce_7 ~~ resd1*divorce_7
+  divorce_8 ~~ resd1*divorce_8
+  divorce_9 ~~ resd1*divorce_9
+  divorce_10 ~~ resd1*divorce_10
   
-  margarine_1 ~~ resd*margarine_1
-  margarine_2 ~~ resd*margarine_2
-  margarine_3 ~~ resd*margarine_3
-  margarine_4 ~~ resd*margarine_4
-  margarine_5 ~~ resd*margarine_5
-  margarine_6 ~~ resd*margarine_6
-  margarine_7 ~~ resd*margarine_7
-  margarine_8 ~~ resd*margarine_8
-  margarine_9 ~~ resd*margarine_9
-  margarine_10 ~~ resd*margarine_10
+  margarine_1 ~~ resd2*margarine_1
+  margarine_2 ~~ resd2*margarine_2
+  margarine_3 ~~ resd2*margarine_3
+  margarine_4 ~~ resd2*margarine_4
+  margarine_5 ~~ resd2*margarine_5
+  margarine_6 ~~ resd2*margarine_6
+  margarine_7 ~~ resd2*margarine_7
+  margarine_8 ~~ resd2*margarine_8
+  margarine_9 ~~ resd2*margarine_9
+  margarine_10 ~~ resd2*margarine_10
   
   # Estimate the covariance between margarine consumption and divorce rate
   # residuals at the same time point.
@@ -772,7 +772,7 @@ summary(ppcrmod_out, standardized = TRUE)
 #' default in multilevel modelling frameworks, so their imposition is 
 #' not unjustifiable, but you can see that they change some of our 
 #' model results quite substantially (our correlation between margarine
-#' slopes and divorce slopes has now increased to 0.494!). This goes to
+#' slopes and divorce slopes has now increased to 0.476!). This goes to
 #' show you how big of an impact some of the assumptions we implicitly 
 #' accept in our modelling frameworks can make - even though they may
 #' be justified, the idea that residual variance at each measurement is 
