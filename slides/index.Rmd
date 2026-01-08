@@ -16,25 +16,56 @@ output:
       ratio: 16:9
       self_contained: true
       countIncrementalSlides: true
+    includes:
+      after_body: header/insert-header-violet.html
 ---
 
-class: middle
+class: middle, title
 background-size: contain
 
-# .tuos_purple[Structural Equation Modelling]
+<br><br><br><br>
 
-### Dr. Calum Webb
-#### Sheffield Methods Institute, the University of Sheffield.
-#### c.j.webb@sheffield.ac.uk
+## Structural Equation Modelling: A taster
+
+**Dr. Calum Webb**<br>
+Deputy Director of Advanced Data Analytics, Sheffield Methods Institute, the University of Sheffield<br>
+[c.j.webb@sheffield.ac.uk](mailto:c.j.webb@sheffield.ac.uk)
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
-library(tidyverse)
 library(patchwork)
 library(dagitty)
 library(lavaan)
+
+# These packages are required for creating the slides
+# Many will need to be installed from Github
+library(icons)
+library(tidyverse)
+library(xaringan)
 library(xaringanExtra)
 library(xaringanthemer)
+
+# Defaults for code
+knitr::opts_chunk$set(
+  fig.width=9, fig.height=3.5, fig.retina=3,
+  out.width = "100%",
+  cache = FALSE,
+  echo = TRUE,
+  message = FALSE, 
+  warning = FALSE,
+  fig.show = TRUE,
+  hiline = TRUE
+)
+
+# set global theme for ggplot to make background #F8F8F8F8 (off white),
+# but otherwise keep all ggplot themes default (better for teaching)
+theme_set(
+  theme(plot.background = element_rect(fill = "#F8F8F8", colour = "#F8F8F8"), 
+        panel.background = element_rect(fill = "#F8F8F8", colour = "#F8F8F8"),
+        legend.background = element_rect(fill = "#F8F8F8", colour = "#F8F8F8")
+        )
+  )
+
 knitr::opts_chunk$set(
   fig.width=9, fig.height=3.5, fig.retina=3,
   out.width = "100%",
@@ -53,30 +84,54 @@ xaringanExtra::use_tile_view()
 
 ```{r xaringan-logo, echo=FALSE}
 xaringanExtra::use_logo(
-  image_url = "images/uni-sheffield.png",
-  exclude_class = c("inverse", "hide_logo")
+  image_url = "header/smi-logo-white.png",
+  exclude_class = c("inverse", "hide_logo"), 
+  width = "180px", position = css_position(top = "1em", right = "2em")
 )
 ```
 
 ```{r xaringan-themer, include=FALSE, warning=FALSE}
-library(xaringanthemer)
-style_duo_accent(
-  primary_color = "#019EE3",
-  secondary_color = "#FCF281",
-  colors = c(tuos_purple = "#030043", grey = "#a8a8a8", tuos_blue ="#019EE3"),
-  header_font_google = xaringanthemer::google_font("Playfair Display", "600", "600i"),
-  text_font_google   = xaringanthemer::google_font("Work Sans", "300", "300i"),
-  #code_font_google   = xaringanthemer::google_font("Lucida Console"),
-  header_h1_font_size = "2.25rem",
-  header_h2_font_size = "1.75rem",
-  header_h3_font_size = "1.5rem", code_font_size = "0.65rem", text_font_size = "1rem"
-)
 
-tuos_blue <- "#019EE3"
+xaringanExtra::use_tachyons()
+
+# Set some global objects containing the colours
+# of the university's branding
+primary_color <- "#131E29"
+secondary_color <- "#440099"
+tuos_blue <- "#9ADBE8"
+white = "#F8F8F8"
 tuos_yellow <- "#FCF281"
-tuos_purple <- "#030043"
-tuos_red <- "#F14469"
+tuos_purple <- "#440099"
+tuos_red <- "#E7004C"
+tuos_midnight <- "#131E29"
 
+# The bulk of the styling is handled by xaringanthemer
+style_duo_accent(
+  primary_color = "#131E29",
+  secondary_color = "#440099",
+  colors = c(tuos_purple = "#440099", 
+             grey = "#131E2960", 
+             tuos_blue ="#9ADBE8",
+             tuos_mint = "#00CE7C"),
+  header_font_google = xaringanthemer::google_font("Source Serif Pro", "600", "600i"),
+  text_font_google   = xaringanthemer::google_font("Source Sans Pro", "300", "300i", "600", "600i"),
+  code_font_google   = xaringanthemer::google_font("Lucida Console"),
+  header_h1_font_size = "2rem",
+  header_h2_font_size = "1.5rem", 
+  header_h3_font_size = "1.25rem", 
+  text_font_size = "0.9rem",
+  code_font_size = "0.65rem", 
+  code_inline_font_size = "0.85rem",
+  inverse_text_color = "#9ADBE8", 
+  background_color = "#F8F8F8", 
+  text_color = "#131E29", 
+  link_color = "#005A8F", 
+  inverse_link_color = "#F8F8F8",
+  text_slide_number_color = "#44009970",
+  table_row_even_background_color = "transparent", 
+  table_border_color = "#44009970",
+  text_bold_font_weight = 600
+)
 ```
 
 ```{r xaringan-panelset, echo=FALSE}
@@ -84,7 +139,8 @@ xaringanExtra::use_panelset()
 ```
 
 ```{r xaringanExtra, echo = FALSE}
-xaringanExtra::use_progress_bar(color = "#019EE3", location = "top")
+# Adds white progress bar to top
+xaringanExtra::use_progress_bar(color = "#F8F8F8", location = "top")
 ```
 
 ```{r xaringan-extra-styles, echo = FALSE}
@@ -95,9 +151,16 @@ xaringanExtra::use_extra_styles(
 ```
 
 ```{r share-again, echo=FALSE}
+# Add sharing links and other embedding tools
 xaringanExtra::use_share_again()
-
 ```
+
+```{r xaringanExtra-search, echo=FALSE}
+# Add magnifying glass search function to bottom left for quick
+# searching of slides
+xaringanExtra::use_search(show_icon = TRUE, auto_search = FALSE)
+```
+
 
 ```{r metathis, echo=FALSE}
 # Add metadata
@@ -371,9 +434,12 @@ stargazer::stargazer(mod1, type = "html", single.row = TRUE)
 class: middle
 
 .pull-left-big[
+<br>
 .center[
 
-```{r, echo = FALSE, fig.height = 5, fig.width = 8, out.width = 800, out.height=500}
+.bg-white.b--purple.ba.bw2.br3.shadow-5.ph4[
+
+```{r, echo = FALSE, fig.height = 4.5, fig.width = 7, out.width = 700, out.height=450}
 
 dag <- dagitty(
   "dag{
@@ -396,13 +462,14 @@ plot(dag, cex = 1.2)
 
 ```
 
+]
 
 ]
 ]
 
 .pull-right-small[
 
-<br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br>
 
 * Can't have investment without income...
 * Income and investment probably both impact family stress, which then impacts wellbeing...
@@ -411,12 +478,15 @@ plot(dag, cex = 1.2)
 
 ---
 
-class: middle
+class: middle, center
 
-.pull-left-big[
+
+<br>
 .center[
 
-```{r, echo = FALSE, fig.height = 5, fig.width = 8, out.width = 800, out.height=500}
+.bg-white.b--purple.ba.bw2.br3.shadow-5.ph4[
+
+```{r, echo = FALSE, fig.height = 4.5, fig.width = 7, out.width = 700, out.height=450}
 
 library(lavaan)
 
@@ -445,6 +515,7 @@ plot(dag_coef, cex = 1.2, show.coefficients = TRUE)
 
 ```
 ]
+
 ]
 
 ---
@@ -459,12 +530,15 @@ plot(dag_coef, cex = 1.2, show.coefficients = TRUE)
 
 `Investment ~ Income`
 
+.bg-white.b--purple.ba.bw2.br3.shadow-5.ph4[
+
 ```{r, echo = FALSE}
 
 knitr::include_graphics("images/dag-reg.png")
 
 ```
 
+]
 
 ]
 
@@ -484,17 +558,22 @@ knitr::include_graphics("images/trenchcoat.jpg")
 
 ---
 
+<br><br>
+
 ### Path Analysis
 
 .pull-left-big[
+.center[
+.bg-white.b--purple.ba.bw2.br3.shadow-5.ph4[
 
-```{r, echo = FALSE, fig.height = 5, fig.width = 8, out.width = 800, out.height=500}
+```{r, echo = FALSE, fig.height = 4.5, fig.width = 7, out.width = 700, out.height=450}
+
 
 plot(dag_coef, cex = 1.2, show.coefficients = TRUE)
 
 ```
 
-]
+]]]
 
 ```{r, include = FALSE}
 
@@ -549,14 +628,20 @@ Income through...
 
 class: middle
 
+<br>
+
 ## But what is family stress? And is this question the best measure of it?
 
 
 ---
 
-### Latent Variables (Factor Analysis)
+class: middle
 
 .pull-left-small[
+
+<br>
+
+### Latent Variables (Factor Analysis)
 
 - We can't just ask: "How much family stress do you experience on a scale of 1-10?" and expect a good measure.
 - We **operationalise** the concept into distinct questions, e.g.:
@@ -574,6 +659,8 @@ class: middle
 .center[
 <br>
 
+.bg-white.b--purple.ba.bw2.br3.shadow-5.ph4[
+
 ```{r, echo = FALSE, out.width="90%"}
 
 knitr::include_graphics("images/cfa.jpg")
@@ -581,10 +668,13 @@ knitr::include_graphics("images/cfa.jpg")
 ```
 
 ]
+]
 
 ]
 
 ---
+
+class: middle
 
 ### Latent Variables (Factor Analysis)
 
@@ -610,7 +700,9 @@ knitr::include_graphics("images/cfa.jpg")
 
 .pull-right[
 
-```{r, echo=FALSE, warning = FALSE, message = FALSE, fig.width=5, fig.height=5, out.height=500, out.width=500, dpi=400}
+.bg-white.b--purple.ba.bw2.br3.shadow-5.ph4[
+
+```{r, echo=FALSE, warning = FALSE, message = FALSE, fig.width=4.5, fig.height=4.5, out.height=450, out.width=450, dpi=400}
 
 library(ggVennDiagram)
 
@@ -621,25 +713,30 @@ venn <- Venn(x)
 venn_dat <- process_data(venn)
 
 ggplot() +
-  geom_sf(fill = "transparent", data = venn_region(venn_dat)) +
-  geom_sf(size = 2, color = "black", data = venn_setedge(venn_dat), show.legend = F) +
-  theme_void()
+  geom_polygon(aes(X, Y, group = id), fill = "transparent", data = venn_regionedge(venn_dat)) +
+   geom_path(aes(X, Y, group = id), 
+          colour = tuos_purple,   
+          data = venn_setedge(venn_dat), 
+          show.legend = FALSE) +
+  geom_text(aes(X, Y, label = name), colour = tuos_purple,
+               data = venn_setlabel(venn_dat)) +
+  coord_equal() +
+  theme_void() 
 
 
 ```
 
-
+]
 ]
 
 
 ---
 
-### Latent Variables (Factor Analysis)
+class: middle
 
 .pull-left[
 
-
-<br><br><br><br><br>
+### Latent Variables (Factor Analysis)
 
 Factor analysis constructs a latent variable that simultaneously predicts multiple indicator (or manifest) variables.
 
@@ -668,12 +765,13 @@ library(lavaanPlot)
 
 .pull-right[
 
-```{r, echo = FALSE, out.width=500, out.height=500, fig.height=500, fig.width=500}
+.bg-white.b--purple.ba.bw2.br3.shadow-5.ph4[
+```{r, echo = FALSE, out.width=400, out.height=200, fig.height=2, fig.width=4}
 
 lavaanPlot(model = stress_cfa_out, coefs = TRUE, stand = TRUE)
 
 ```
-
+]
 
 ]
 
@@ -695,6 +793,8 @@ GGally::ggpairs(tibble(stress_lv = as.numeric(stress_lv), stress_q1 = dat$stress
 
 ### SEM with Latent Variables
 
+
+.bg-white.b--purple.ba.bw2.br3.shadow-5.ph4[
 .center[
 
 ```{r, echo = FALSE, out.height=500, out.width=700, fig.height=5, fig.width=7}
@@ -798,6 +898,7 @@ circle_points("Stress", sem_with_lv, cex = 8)
 ```
 
 ]
+]
 
 ---
 
@@ -805,19 +906,24 @@ class: middle
 
 ### Latent Growth Modelling
 
+.bg-white.b--purple.ba.bw2.br3.shadow-5.ph4[
+
 ```{r, echo = FALSE}
 
 knitr::include_graphics("images/divorce_margarine.png")
 
 ```
 
+]
+
 ---
 
-### Latent Growth Modelling
+class: middle
 
 .pull-left-small[
 
-
+<br>
+### Latent Growth Modelling
 Constraints on latent variables can also be used in clever ways to capture change over time.
 
 
@@ -828,7 +934,7 @@ Constraints on latent variables can also be used in clever ways to capture chang
 .center[
 
 <br><br><br>
-
+.bg-white.b--purple.ba.bw2.br3.shadow-5.ph4[
 ```{r, echo = FALSE, out.width="100%"}
 
 long_dat <- read_csv("../data/margarines_divorce.csv")
@@ -993,12 +1099,16 @@ circle_points(c("i_marg", "s_marg", "i_div", "s_div"), lgm_graph, cex = 7)
 
 ]
 
+]
+
 ---
 
-### Latent Growth Modelling
+class: middle
 
 .pull-left-small[
 
+<br>
+### Latent Growth Modelling
 
 Constraints on latent variables can also be used in clever ways to capture change over time.
 
@@ -1015,7 +1125,7 @@ Constraints on latent variables can also be used in clever ways to capture chang
 .center[
 
 <br><br><br>
-
+.bg-white.b--purple.ba.bw2.br3.shadow-5.ph4[
 ```{r, echo = FALSE, out.width="100%"}
 
 plot(lgm_graph, show.coefficients = TRUE, abbreviate.names = TRUE, 
@@ -1023,7 +1133,7 @@ plot(lgm_graph, show.coefficients = TRUE, abbreviate.names = TRUE,
 circle_points(c("i_marg", "s_marg", "i_div", "s_div"), lgm_graph, cex = 7)
 
 ```
-
+]
 ]
 
 ]
@@ -1034,10 +1144,13 @@ circle_points(c("i_marg", "s_marg", "i_div", "s_div"), lgm_graph, cex = 7)
 
 ---
 
-### Latent Growth Modelling
+class: middle
 
 .pull-left-small[
 
+<br><br>
+
+### Latent Growth Modelling
 
 The fact that latent growth models use wide rather than long data means that there are a few more nuanced options for examining associations between trends as well as residuals between trends:
 
@@ -1049,7 +1162,8 @@ The fact that latent growth models use wide rather than long data means that the
 ]
 
 .pull-right-big[
-
+<br>
+.bg-white.b--purple.ba.bw2.br3.shadow-5.ph4[
 .center[
 
 ```{r, echo = FALSE, out.width="80%"}
@@ -1059,7 +1173,7 @@ knitr::include_graphics("images/lgm.jpg")
 ```
 
 ]
-
+]
 ]
 
 ---
@@ -1068,7 +1182,7 @@ class: middle
 
 .pull-left[
 
-## [Open access taster workbook on SEM, CFA, and LGM in `R` using the `lavaan` package](https://github.com/cjrwebb/aqm-taster-sem)
+## [Open access taster workbook on SEM, CFA, and LGM in R using the `lavaan` package](https://github.com/cjrwebb/aqm-taster-sem)
 
 Link: https://github.com/cjrwebb/aqm-taster-sem 
 
@@ -1078,11 +1192,15 @@ Link: https://github.com/cjrwebb/aqm-taster-sem
 
 .pull-right[
 
+<br>
+
+.bg-white.b--purple.ba.bw2.br3.shadow-5.ph4[
 ```{r, echo = FALSE, out.width="80%"}
 
 knitr::include_graphics("images/githubpage.png")
 
 ```
+]
 
 ]
 
